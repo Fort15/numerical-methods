@@ -1,4 +1,5 @@
 from utils.io_helpers import read_matrix, read_vector, print_vector
+import numpy as np
 
 
 def norm_matrix(A):
@@ -59,13 +60,15 @@ def create_alpha_beta(A, b):
     n = len(A)
 
     for i in range(n):
-        if abs(A[i][i]) < 1e-15:            # нулевой диагональный элемент -> перестановка строк
+        # нулевой диагональный элемент -> перестановка строк
+        if abs(A[i][i]) < 1e-15:
             for k in range(i + 1, n):
                 if abs(A[k][i]) > 1e-15:
                     A[i], A[k] = A[k], A[i]
                     b[i], b[k] = b[k], b[i]
                     break
-            raise ValueError(f'Нулевой столбец {i + 1}')
+            else:
+                raise ValueError(f'Нулевой столбец {i + 1}')
 
     alpha = [[0.0] * n for _ in range(n)]
     beta = [0.0] * n
@@ -108,12 +111,21 @@ def main():
     print()
 
     print('Сравнение методов:')
-    if x_zeid < x_simp_it:
+    if count_zeid_it < count_simp_it:
         print(f'Зейдель быстрее в {count_simp_it / count_zeid_it:.2f} раз')
-    elif x_zeid > x_simp_it:
+    elif count_zeid_it > count_simp_it:
         print(f'Простые итерации быстрее в {count_zeid_it / count_simp_it:.2f} раз')
     else:
         print('Одинаковое число итераций')
+
+    x_expected = np.linalg.solve(np.array(A), np.array(b))
+    x_expected = [float(v) for v in x_expected]
+    print_vector(x_expected, title='Эталонное решение:')
+    diff_simp = max([abs(x_simp_it[i] - x_expected[i]) for i in range(n)])
+    diff_zeid = max([abs(x_zeid[i] - x_expected[i]) for i in range(n)])
+    print(f'Отклонение от эталона:')
+    print(f'Простые итерации: {diff_simp:.3f}')
+    print(f'Метод Зейделя: {diff_zeid:.3f}')
 
 
 if __name__ == '__main__':
