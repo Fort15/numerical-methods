@@ -42,3 +42,8 @@ def matrix_equals(A, B, eps=1e-10):
             if abs(A[i][j] - B[i][j]) > eps:
                 return False
     return True
+
+
+def matrix_transposition(A):
+    n = len(A)
+    return [[A[j][i] for j in range(n)] for i in range(n)]

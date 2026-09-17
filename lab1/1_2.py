@@ -44,7 +44,7 @@ def runoff_coef(a, b, c, d, n):
 def reverse_move(P, Q, n):
     x = [0.0] * n
     x[-1] = Q[-1]
-    for i in range(n-2 , -1, -1):
+    for i in range(n-2, -1, -1):
         x[i] = P[i] * x[i + 1] + Q[i]
 
     return x
