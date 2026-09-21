@@ -34,6 +34,17 @@ def matvec(A, x):
     return result
 
 
+def vecvec(u, v):
+    """Умножение вектора на вектор"""
+    m = len(u)
+    n = len(v)
+    C = [[0.0] * n for _ in range(m)]
+    for i in range(m):
+        for j in range(n):
+            C[i][j] = u[i] * v[j]
+    return C
+
+
 def matrix_equals(A, B, eps=1e-10):
     m = len(A)
     n = len(A[0])
@@ -47,3 +58,35 @@ def matrix_equals(A, B, eps=1e-10):
 def matrix_transposition(A):
     n = len(A)
     return [[A[j][i] for j in range(n)] for i in range(n)]
+
+
+def mat_sub(A, B):
+    """Вычитание матриц"""
+    m = len(A)
+    n = len(A[0])
+    if len(B) != m or len(B[0]) != n:
+        raise ValueError('Размеры матриц не совпадают')
+    return [[A[i][j] - B[i][j] for j in range(n)] for i in range(m)]
+
+
+def mat_scale(A, c):
+    """Умножение матрицы на число"""
+    m = len(A)
+    n = len(A[0])
+    return [[c * A[i][j] for j in range(n)] for i in range(m)]
+
+
+def scalar_product(u, v):
+    """Скалярное произведение векторов u и v."""
+    if len(u) != len(v):
+        raise ValueError('Разные длины векторов')
+    s = 0.0
+    for i in range(len(u)):
+        s += u[i] * v[i]
+    return s
+
+
+def identity(n):
+    """Единичная матрица n x n."""
+    return [[1.0 if i == j else 0.0 for j in range(n)] for i in range(n)]
+
