@@ -48,8 +48,19 @@ def qr_eigenvalues(A, eps=1e-6):
     for k in range(max_iter):
         Q, R = qr_decompose(Ak)
         Ak = matmul(R, Q)
-        if sum(Ak[i][j] ** 2 for i in range(n) for j in range(i)) ** 0.5 < eps:
+
+        converged = True
+
+        for m in range(n - 1):
+            column_norm = (sum(Ak[l][m] ** 2 for l in range(m + 1, n)) ** 0.5)
+
+            if column_norm > eps:
+                converged = False
+                break
+
+        if converged:
             break
+
     return [Ak[i][i] for i in range(n)]
 
 
@@ -96,7 +107,7 @@ def main():
         if abs(lam.imag) < 1e-10:
             print(f'lambda_{i + 1} = {lam.real:.6f}')
         else:
-            print(f'lambda_{i + 1} = {lam.real:.6f} + {lam.imag:.6f}i')
+            print(f'lambda_{i + 1} = {lam.real:.6f}{lam.imag:.6f}i')
 
     print()
     print('=' * 60)
@@ -111,9 +122,12 @@ def main():
 
     eigvals_B = np.linalg.eigvals(np.array(B, dtype=float))
     print('Собственные значения (NumPy):')
-    for i in range(n):
+    for i in range(len(B)):
         lam = eigvals_B[i]
-        print(f'lambda_{i + 1} = {lam:.6f}')
+        if abs(lam.imag) < 1e-10:
+            print(f'lambda_{i + 1} = {lam.real:.6f}')
+        else:
+            print(f'lambda_{i + 1} = {lam.real:.6f}{lam.imag:+.6f}i')
 
 
 if __name__ == '__main__':
