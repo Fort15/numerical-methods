@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from utils.progonka import runoff_coef, reverse_move
 
@@ -145,6 +147,7 @@ def main():
     plt.grid(True, alpha=0.3)
     plt.legend(fontsize=9)
     plt.tight_layout()
+    plt.savefig('img/3_2.png', dpi=150)
     plt.show()
 
 

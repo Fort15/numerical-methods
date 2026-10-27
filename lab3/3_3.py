@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from utils.lu import lu_decompose, solve_lu
 
@@ -8,15 +10,11 @@ Y = [0.86603, 1.0, 0.86603, 0.50, 0.0, -0.50]
 
 def build_mnk_system(X, Y, degree):
     N = len(X)
-    size = degree + 1
 
-    A = [[0.0] * size for _ in range(size)]
-    b = [0.0] * size
+    S = [sum(X[j] ** p for j in range(N)) for p in range(2 * degree + 1)]
 
-    for k in range(size):
-        for i in range(size):
-            A[i][k] = sum(X[j] ** (i + k) for j in range(N))
-        b[k] = sum(X[j] ** k * Y[j] for j in range(N))
+    A = [[S[i + k] for i in range(degree + 1)] for k in range(degree + 1)]
+    b = [sum(Y[j] * (X[j] ** k) for j in range(N)) for k in range(degree + 1)]
 
     return A, b
 
@@ -118,6 +116,7 @@ def main():
     plt.grid(True, alpha=0.3)
     plt.legend(fontsize=10)
     plt.tight_layout()
+    plt.savefig('img/3_3.png', dpi=150)
     plt.show()
 
 

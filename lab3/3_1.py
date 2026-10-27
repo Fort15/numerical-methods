@@ -122,11 +122,11 @@ def plot_graph(X, Y, X_star, f, a=None, b=None):
 
     plt.xlabel('x')
     plt.ylabel('y')
-    plt.title('Интерполяция: Лагранж vs Ньютон')
+    plt.title('Интерполяционные многочлены Лагранжа и Ньютона')
     plt.legend()
     plt.grid(True, alpha=0.3)
     plt.tight_layout()
-    plt.savefig('interpolation.png', dpi=150)
+    plt.savefig('img/3_1.png', dpi=150)
     plt.show()
 
 
